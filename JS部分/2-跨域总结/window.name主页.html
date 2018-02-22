@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>window.name主页</title>
+</head>
+
+<body>
+
+  <script>
+    // 主页面 http://localhost:80
+    const iframe = document.createElement('iframe')
+    iframe.style.display = 'none'
+    // 防止无限刷新
+    let state = 0
+
+    iframe.onload = () => {
+      if (state === 1) {
+        console.log(JSON.parse(iframe.contentWindow.name));
+        // 清除创建的iframe
+        iframe.contentWindow.document.write('');
+        iframe.contentWindow.close();
+        document.body.removeChild(iframe);
+      } else if (state === 0) {
+        state = 1;
+        // 加载完成，指向当前域，防止错误，不能指向域名，设置为空页即可
+        iframe.contentWindow.location = 'http://localhost:80/blank.html';
+      }
+    }
+    iframe.contentWindow.location = 'http://localhost:81'
+    document.appendChild(iframe)
+  </script>
+</body>
+
+</html>

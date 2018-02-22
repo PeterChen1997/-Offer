@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>CSS圆环进度条实现</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .bottom {
+      height: 300px;
+      width: 300px;
+      border: 10px solid red;
+      border-radius: 50%;
+    }
+    .right {
+      height: 300px;
+      width: 150px;
+      border: 10px solid gray;
+      /* border-radius 左上开始顺时针 */
+      /* 160 = 300 / 2 + 10 */
+      border-radius: 0% 160px 160px 0%;
+      border-color: gray gray gray transparent;
+      /* border 有 10px */
+      transform-origin: 10px;
+      transform: rotate(0deg);
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 150px;
+    }
+    .left {
+      height: 300px;
+      width: 150px;
+      border: 10px solid gray;
+      /* border-radius 左上开始顺时针 */
+      /* 160 = 300 / 2 + 10 */
+      border-radius: 160px 0 0 160px;
+      border-color: gray transparent gray gray;
+      /* border 有 10px */
+      transform-origin: 160px;
+      transform: rotate(0deg);
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      left: 0px;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div class="bottom"></div>
+    <div class="left"></div>
+    <div class="right"></div>
+  </div>
+
+  <script>
+    const left = document.querySelector('.left')
+    const right = document.querySelector('.right')
+    let deg = 0
+    let delay = 100
+    let timeoutId
+    
+    const callback = function() {
+      deg += 10
+      if(deg <= 180) {
+        right.style.transform = `rotate(${deg}deg)`
+      } else if(deg < 360) {
+        right.style.transform = 'rotate(0deg)'
+        right.style.borderColor = 'red red red transparent'
+        left.style.transform = `rotate(${deg - 180}deg)`
+      } else {
+        deg = 0
+        right.style.borderColor = 'gray gray gray transparent'
+        left.style.transform = `rotate(0deg)`
+        
+      }
+    }
+
+    function ImitateInterval(callback, delay) {
+      timeoutId = setTimeout(function() {
+        callback()
+        // 设置什么时候停止
+        ImitateInterval(callback, delay)
+      }, delay)
+    }
+
+    ImitateInterval(callback, delay)
+    
+  </script>
+</body>
+</html>

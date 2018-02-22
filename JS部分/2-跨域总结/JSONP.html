@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>JSONP</title>
+</head>
+
+<body>
+  <div class="weather">
+    <p class="city"></p>
+    <p class="degree"></p>
+  </div>
+
+  <script>
+    const script = document.createElement('script')
+    const city = 'wuxi'
+    // wuxi
+    script.src = 'https://api.caiyunapp.com/v2/RiA7WLZYAoqRWsdW/120.299,31.568/realtime.jsonp?callback=handleRes'
+
+    document.body.appendChild(script)
+
+    function handleRes(data) {
+      document.body.removeChild(script)
+      let degree = data.result.temperature
+      document.querySelector('.city').textContent = city
+      document.querySelector('.degree').textContent = degree + '°C'
+    }
+  </script>
+</body>
+
+</html>
